@@ -1,27 +1,27 @@
-var apiKey = "166a433c57516f51dfab1f7edaed8413";
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
-    "q=Bujumbura,Burundi&appid=" + apiKey;
-    
-$("#search-Btn").on("click", search);
-let searchCity;
-    function search(e) {
-        e.preventDefault();
-        console.log(this);
-        searchCity = $("#search-city").val();
-    };
-
-
-$.ajax({
+$("#find-city").on("click", function (event) {
+  event.preventDefault();
+  var city = $("#search-city").val();
+  var apiKey = "15e194eb7337b7a0b68384d6ffba65cc";
+  var queryURL = "api.openweathermap.org/data/2.5/forecast?q={city name}&appid=" + city + apiKey;
+  $.ajax({
     url: queryURL,
     method: "GET"
-}).then(function (response) {
-    console.log(weatherURL);
-    event.preventDefault;
-    searchCity = $("#search-city").val();
-    $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-    $(".wind").text("Wind Speed: " + response.wind.speed);
-    $(".humidity").text("Humidity: " + response.main.humidity);
+  }).then(function (response) {
+    $("#results-card").text(JSON.stringify(response));
+  });
 });
+
+
+
+
+//Set date for weather forecast
+// function setDate() {
+//   var setDate = $("#currentDate");
+//   var date = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");;
+//   setDate.html(date);
+//   console.log(setDate);
+
+// }
 
 
 
