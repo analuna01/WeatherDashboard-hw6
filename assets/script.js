@@ -8,13 +8,13 @@ $("#find-city").on("click", function (event) {
     url: queryURL,
     method: "GET"
   }).then(function (response) {
-    // $("#results-card").text(JSON.stringify(response));
     console.log(response);
     console.log(response.main.temp);
 
-    updateWeather(response.main.temp, response.main.humidity, response.wind.speed, "");
+    updateWeather(response.name, response.main.temp, response.main.humidity, response.wind.speed, "");
   });
 });
+
 
 //Set date for weather forecast
 function setDate() {
@@ -24,16 +24,17 @@ function setDate() {
   console.log(setDate);
 }
 
-// Display results from search
-function displayWeather(){
+// Display weather categories:
+function displayWeather() {
   var weatherDiv = $("#results-card");
 
   var currentDiv = $("<div " + "</div>");
-  var searchedCity = $("<h1>" +  "City" +  "</h1>");
+  var searchedCity = $("<h1>" + "City:" + "<span id='cityTag'></span>  </h1>");
   var temperature = $("<p>" + "Temperature:" + "<span id='tempTag'></span> </p>");
   var humidity = $("<p>" + "Humidity:" + "<span id='humidityTag'></span> </p>");
   var wind = $("<p>" + "Wind:" + "<span id='windTag'></span> </p>");
   var uvIndex = $("<p>" + "UV Index:" + "<span id='uvTag'></span> </p>");
+
 
   currentDiv.append(searchedCity);
   currentDiv.append(temperature);
@@ -45,13 +46,17 @@ function displayWeather(){
 
 };
 
-function updateWeather(temperature, humidity, windSpeed, uvIndex){
-  $("#tempTag").text(temperature); 
+// Display weather results:
+function updateWeather(city, temperature, humidity, windSpeed, uvIndex) {
+  $("#cityTag").text(city);
+  $("#tempTag").text(temperature - 273.15) * 1.80 + 32;
   $("#humidityTag").text(humidity);
   $("#windTag").text(windSpeed);
-  
+
 }
+
 displayWeather();
+
 
 
 
