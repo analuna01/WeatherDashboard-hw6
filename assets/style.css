@@ -1,5 +1,5 @@
 .header {
-    background-color: grey;
+    background-color: lightskyblue;
     margin-bottom: 10px;
 }
 
@@ -9,9 +9,29 @@
 }
 
 .search-form{
-    margin-left: 70px;
+    margin: 0px;
 }
 
 #search-Btn{
     border-color: black;
+}
+
+.search-results{
+    padding-left: 15px;
+    margin: 0px;
+}
+
+#results-card{
+    font-style: italic;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.city{
+    font-style: normal;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.forecast{
+    padding-left: 15px;
 }
