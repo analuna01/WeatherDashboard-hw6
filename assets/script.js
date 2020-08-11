@@ -15,31 +15,36 @@ $("#find-city").on("click", function (event) {
     $(".humidity").text("Humidity:" + response.main.humidity + "%");
     $(".wind").text("Wind:" + response.wind.speed);
 
-  // Converts temp from Kelvin to Fahrenheit:
+    // Converts temp from Kelvin to Fahrenheit:
     var temp = (response.main.temp - 273.15) * 1.80 + 32;
     $(".temp").text("Temperature:" + temp.toFixed(2) + "F");
-
-    // AJAX for UV Index:
-    $.ajax({
-      url: "http://api.openweathermap.org/data/2.5/uvi?" + encodeURIComponent(city) + apiKey,
-      method: "GET"
-    }).then(function (response) {
-      console.log(response);
-      $(".uvIndex").text("UV Index:" + response)
-    })
-
-    // AJAX for 5 Day Forecast:
-    $.ajax({
-      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey,
-      method: "GET"
-    })
-      .then(function (response) {
-        console.log(response);
-        $(".forecast").html("<h3>" + response.list.main.temp + " Weather Details</h3>");
-
-      })
-    // updateWeather(response.name, response.main.temp, response.main.humidity, response.wind.speed, "");
   });
+
+  // AJAX for UV Index:
+  let lat = response.coord.lat;
+  let lon = response.coord.lon;
+  $.ajax({
+    url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey + "&lat=" + lat + "&lon=" + lon,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response);
+    console.log(response.coord);
+    $(".uvIndex").text("UV Index:" + response);
+
+  });
+
+  // AJAX for 5 Day Forecast:
+  $.ajax({
+    url: "http://api.openweathermap.org/data/2.5/forecast?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response);
+
+  
+    $(".forecast").text("<p>" + "5 Day Forecast" + response.list.main.temp + "</p>");
+
+  });
+
 });
 
 
