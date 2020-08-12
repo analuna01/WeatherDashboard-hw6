@@ -9,8 +9,8 @@ $("#find-city").on("click", function (event) {
     url: "https://api.openweathermap.org/data/2.5/weather?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey,
     method: "GET"
   }).then(function (response) {
-    console.log(response);
-    console.log(response.main.temp);
+    // console.log(response);
+    // console.log(response.main.temp);
     $(".city").html("<h1>" + response.name + "</h1>");
     $(".humidity").text("Humidity:" + response.main.humidity + "%");
     $(".wind").text("Wind:" + response.wind.speed);
@@ -18,20 +18,20 @@ $("#find-city").on("click", function (event) {
     // Converts temp from Kelvin to Fahrenheit:
     var temp = (response.main.temp - 273.15) * 1.80 + 32;
     $(".temp").text("Temperature:" + temp.toFixed(2) + "F");
+    // AJAX for UV Index:
+    let lat = response.coord.lat;
+    let lon = response.coord.lon;
+    $.ajax({
+      url: "http://api.openweathermap.org/data/2.5/uvi?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey + "&lat=" + lat + "&lon=" + lon,
+      method: "GET"
+    }).then(function (response) {
+      // console.log(response);
+      // console.log(response.value);
+      $(".uvIndex").text("UV Index:" + response.value);
+
+    });
   });
 
-  // AJAX for UV Index:
-  let lat = response.coord.lat;
-  let lon = response.coord.lon;
-  $.ajax({
-    url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey + "&lat=" + lat + "&lon=" + lon,
-    method: "GET"
-  }).then(function (response) {
-    console.log(response);
-    console.log(response.coord);
-    $(".uvIndex").text("UV Index:" + response);
-
-  });
 
   // AJAX for 5 Day Forecast:
   $.ajax({
@@ -39,14 +39,41 @@ $("#find-city").on("click", function (event) {
     method: "GET"
   }).then(function (response) {
     console.log(response);
+    for (var i = 0; i < response.list.length; i += 8) {
+      console.log(response.list[i].weather[0].icon);
 
-  
-    $(".forecast").text("<p>" + "5 Day Forecast" + response.list.main.temp + "</p>");
+      var temperature = (response.list[i].main.temp - 273.15) * 1.80 + 32;
+      temperature = temperature.toFixed(2) + "F";
+      var humidity = response.list[i].main.humidity;
+      // var wind = response.list[i].wind.speed;
+      var iconSource = "http://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + "@2x.png";
+      var weatherIcon = $("<img>");
+      weatherIcon.attr("src", iconSource)
+      console.log(weatherIcon);
+
+
+      var forecastDiv = $(".forecast-results");
+      //forecastDiv.html("");
+      //var newDiv = $("<div>");
+      var weatherIconElement = $("<div class='weatherIcon'>");
+      var temperatureElement = $("<div class='temperature'>");
+      var humidityElement = $("<div class='humidity'>");
+      var resultContainer = $("<div class='forecastResults'>");
+
+      //forecastDiv.append(newDiv);
+      weatherIconElement.html(weatherIcon);
+      temperatureElement.html(temperature);
+      humidityElement.html(humidity);
+      resultContainer.append(weatherIconElement);
+      resultContainer.append(temperature);
+      resultContainer.append(humidityElement);
+      forecastDiv.append(resultContainer);
+
+    };
 
   });
 
 });
-
 
 //Set date for weather forecast
 function setDate() {
@@ -57,45 +84,6 @@ function setDate() {
 }
 
 setDate();
-
-
-// Display weather categories:
-// function displayWeather() {
-//   var weatherDiv = $("#results-card");
-
-//   var currentDiv = $("<div> " + "</div>");
-  // var searchedCity = $("<h1>" + "City:" + "<span id='cityTag'></span>  </h1>");
-//   var temperature = $("<p>" + "Temperature:" + "<span id='tempTag'></span> </p>");
-//   var humidity = $("<p>" + "Humidity:" + "<span id='humidityTag'></span> </p>");
-//   var wind = $("<p>" + "Wind:" + "<span id='windTag'></span> </p>");
-//   var uvIndex = $("<p>" + "UV Index:" + "<span id='uvTag'></span> </p>");
-
-
-//   currentDiv.append(searchedCity);
-//   currentDiv.append(temperature);
-//   currentDiv.append(humidity);
-//   currentDiv.append(wind);
-//   currentDiv.append(uvIndex);
-//   weatherDiv.append(currentDiv);
-//   console.log(displayWeather);
-
-// };
-
-// Display weather results:
-// function updateWeather(city, temperature, humidity, windSpeed, uvIndex) {
-//   $("#cityTag").text(city);
-//   $("#tempTag").text(temperature - 273.15) * 1.80 + 32;
-//   $("#humidityTag").text(humidity);
-//   $("#windTag").text(windSpeed);
-
-//   $("#uvTag").text(uvIndex);
-// }
-
-
-
-
-// displayWeather();
-
 
 
 
