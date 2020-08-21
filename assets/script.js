@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     // AJAX for 5 Day Forecast:
     $.ajax({
-      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey,
+      url: "https://api.openweathermap.org/data/2.5/forecast?q=" + encodeURIComponent(city) + ",Burundi&appid=" + apiKey,
       method: "GET"
     }).then(function (response) {
       console.log(response);
